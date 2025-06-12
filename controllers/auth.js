@@ -81,7 +81,7 @@ const handleLogin = async (request, response) => {
   try {
     
     const {email, password} = request.body
-    const existingUser = await Auth.findOne({email})
+    const existingUser = await User.findOne({email})
     if(!existingUser){
       return response.status(404).json({
         success: false,
