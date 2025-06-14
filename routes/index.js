@@ -1,9 +1,11 @@
 const authRouter = require("./authRoutes")
-const productsRouter = require("./productRoutes")
+const favouriteRouter = require("./favoriteRoutes")
+const watchlistRouter = require("./watchlistRoutes")
 
 const routes = [
   authRouter,
-  productsRouter
+  favouriteRouter,
+  watchlistRouter
 ]
 
 module.exports = routes

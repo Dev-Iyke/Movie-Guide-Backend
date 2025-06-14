@@ -5,23 +5,6 @@ const { User } = require("../models/auth");
 const { validateEmail } = require("../validators/email");
 const { sendSignupEmail } = require("../helpers/sendMail");
 
-const handleGetAllUsers = async (request, response) => {
-  try {
-    const users = await User.find()
-  
-    return response.status(200).json({
-      success: true,
-      message: 'success',
-      users
-    })
-  } catch (error) {
-    return response.status(400).json({
-      success: false,
-      message: "An error occurred"
-    })
-  }
-}
-
 const handleUserSignup = async (request, response) => {
   try {
     const { email, password, firstName, lastName, role } = request.body;
@@ -77,6 +60,39 @@ const handleUserSignup = async (request, response) => {
   }
 }
 
+const handleGetUser = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await User.findById(userId).select('-password');
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    res.status(200).json({ success: true, user });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+
+const handleGetAllUsers = async (request, response) => {
+  try {
+    const users = await User.find()
+  
+    return response.status(200).json({
+      success: true,
+      message: 'success',
+      users
+    })
+  } catch (error) {
+    return response.status(400).json({
+      success: false,
+      message: "An error occurred"
+    })
+  }
+}
+
+
+
 const handleLogin = async (request, response) => {
   try {
     
@@ -129,6 +145,7 @@ const handleLogin = async (request, response) => {
 
 module.exports = {
   handleGetAllUsers,
+  handleGetUser,
   handleUserSignup,
   handleLogin,
 }
